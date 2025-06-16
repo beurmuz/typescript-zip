@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "moduleDetection": "force",
+    "outDir": "dist",
+    "strict": true, // strictNullChecks의 상위 옵션. strict를 true로 하면 strictNullChecks도 true
+    "strictNullChecks": false, // 엄격한 null 검사 (null 타입이 아닌 변수에 null값을 넣음을 허용하는 옵션)
+    "esModuleInterop": true, // 보통 필요
+    "skipLibCheck": true // 외부 타입 충돌 방지 (선택)
+  },
+  "include": ["src"]
+}
