@@ -1,2 +1,1 @@
-# typescript-study
-📚 typescript-study 📚
+typescript-study 
