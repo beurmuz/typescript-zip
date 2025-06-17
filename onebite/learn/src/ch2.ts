@@ -38,5 +38,5 @@ const users: [string, number][] = [
   ["sikk", 1],
   ["ph1", 2],
   ["haon", 3],
-  [5, "nugu"], // error
+  //   [5, "nugu"], // error
 ];
