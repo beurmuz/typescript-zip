@@ -1,0 +1,27 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+// 1. 배열
+// 배열 타입을 정의하는 방법 1) 배열의 요소 타입 적고, 해당 타입이 배열임을 알리기 위해 []를 붙여준다.
+let numArr = [1, 2, 3];
+let strArr = ["hello", "im", "mmmmmue"];
+let boolArr = [true, false, true];
+// 배열 타입을 정의하는 방법 2) Array<> -> <>(제네릭) 안에 배열의 요소 타입을 작성한다.
+let boolArr2 = [true, false, false];
+// 배열에 들어가는 요소들의 타입이 다양할 경우
+// 유니언 타입 이용하기 '|'
+let multiArr = [1, "hello"];
+// 다차원 배열의 타입을 정의하는 방법. (2, 3차원 ...)
+// 가장 먼저 요소들의 타입을 적어준 후,
+let doubleArr = [[1, 2, 3], [4, 5], [6]];
+// 2. 튜플
+// - javascript에는 없고 typescript에서 특별히 제공됨
+// 길이와 타입이 고정된 배열
+let tup1 = [1, 2];
+// tup1 = [1, 2, 3]; // error
+// tup1 = ["1", "2"]; // error
+let tup2 = [1, '2', true];
+// tup2 = ['2', 1, 3]; // error
+// 근데 tsc로 컴파일하고 javascript 파일을 보면 튜플 타입은 배열로 변환되는 것을 확인할 수 있다.
+// 그래서 push,pop 등의 배열 메서드를 사용할 수 있다.
+tup2.push('2');
+console.log(tup2);
