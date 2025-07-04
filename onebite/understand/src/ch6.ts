@@ -1,5 +1,7 @@
 /**
  * 타입 단언 (Type Assertion)
+ *
+ * casting같은게 아니라, 그냥 ts 컴파일러의 눈을 잠깐 가리는 (그렇게 믿고록 만드는) 정도인 것이다.
  */
 type Person = {
   name: string;
