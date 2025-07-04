@@ -1,83 +1,99 @@
 /**
- * NOTE: Unknown Type
+ * 기본 타입 간의 호환성
  *
- * - TypeScript의 모든 Type을 포함한다.
- *   -> '전체 집합'
- *   -> 모든 Type의 슈퍼 Type
- *   -> 모든 Type을 넣을 수 있다. (Upcasting)
+ * - 특정 타입을 다른 타입으로 취급해도 괜찮은지 판단하는 것이었다.
  */
-function unknownExam() {
-  // 값의 Type을 unknown으로 취급하는 'Upcasting'
-  let a: unknown = 1; // number를 unknwon에 캐스팅 시킨다.
-  let b: unknown = "hello";
-  let c: unknown = true;
-  let d: unknown = null;
-  let e: unknown = undefined;
-
-  // Downcasting
-  // unknown Type의 변수는 어떤 type의 변수에도 들어갈 수 없다. (Downcasting이 안돼서)
-  let unknownVar: unknown;
-  //   let num: number = unknownVar; // error
-  //   let str: string = unknownVar; // error
-}
+let num1: number = 10;
+let num2: 10 = 10;
+/// number type은 number 리터릴 타입보다 더 큰 타입, 즉 Super이므로 upcasting이 가능
+num1 = num2; // Number 리터럴 값을 Number Type의 변수에 할당하는 것은 허용된다.
 
 /**
- * NOTE: Never Type
+ * 객체 타입간의 호환성
  *
- * - 모든 type의 sub type
- * - 모든 집합의 서브 집합 => 즉, '공집합'
- */
-function neverExam() {
-  // neverFunc이 반환하는 값은 '공집합'
-  // (= 반환할 수 있는 값의 종류가 아무것도 없음)
-  function neverFunc(): never {
-    while (true) {}
-  }
-
-  // Upcasting
-  let num: number = neverFunc(); // neverFunc()을 number에 업캐스팅 시킨다.
-  let str: string = neverFunc();
-  let bool: boolean = neverFunc();
-
-  // Downcasting은 불가능
-  // - 그 어떤 값도 never에 다운캐스팅할 수 없다.
-  //   let never1: never = 10; // error
-  //   let never2: never = "string"; // error
-  //   let never3: never = true; // error
-}
-
-/**
- * NOTE: Void Type
+ * -> '어떤 객체 타입을 다른 객체 타입으로 취급해도 괜찮은가?'를 판단하는 것
  *
- * - 반환값이 없는 함수 (= return 문이 없는 함수)
- * - ✅ 놀랍게도 void type은 undefined의 super Type
+ * - 객체 타입은 프로퍼티를 기준으로 관계를 갖는다.
+ *   - TypeScript는 프로퍼티를 기준으로 타입을 정의하는 '구조적 타입 시스템'을 따른다.
+ *
+ * - 이렇게 객체 타입간의 관계를 정의할 때는 추가 프로퍼티가 있는 type이 서브 타입,
+ *   추가 프로퍼티가 더 적은 (=조건이 더 적은) type이 수퍼 타입이 된다.!!
  */
-function voidExam() {
-  function voidFunc(): void {
-    console.log("hi");
-    return undefined;
-  }
+type Animal = {
+  // 수퍼 타입
+  name: string;
+  color: string;
+};
 
-  // void type의 변수에는 undefined 값을 넣을 수 있다.
-  //   -> ✅ 그렇기 때문에 return이 아예 없는 대신 return undefined를 해도 문제가 없는 것이다!
-  // undefined을 void에 업캐스팅
-  let voidVar: void = undefined;
-}
+type Dog = {
+  // 서브 타입
+  name: string;
+  color: string;
+  breed: string;
+};
 
+let animal: Animal = {
+  name: "기린",
+  color: "yellow",
+};
 
-/**
- * any Type
- * 
- * - unknown의 sub Type이지만, any는 '치트키'이다.
- *   -> ✅ any type은 타입 계층도를 완벽히 무시한다!
- *   -> 즉, any는 모든 타입의 super type으로 위치하기도 하고, 
- *      모든 타입의 sub type으로 위치하기도 한다. (단, sub type일 땐 never만 빼고 해당!)
- */
-function anyExam() {
-    let unknownVar: unknown;
-    let anyVar: any;
+let dog: Dog = {
+  name: "돌돌이",
+  color: "brown",
+  breed: "진도",
+};
 
-    // 놀랍게도 unknown type은 any type에 다운 캐스팅이 될 수 있다!
-    anyVar = unknownVar; // any type의 변수에 unknown type의 값을 넣는 것은 '가능'
+// Dog type을 Animal type으로 취급하는 것은 가능.
+// Dog type이 Animal type으로 가는 Upcasting
+animal = dog;
 
-}
+// Animal type을 Dog type으로 취급하는 것(Downcasting)은 불가능.
+// -> 사실은 Animal type이 슈퍼 타입이고, Dog type이 서브 타입
+// dog = animal; // error
+
+type Book = {
+  // 슈퍼
+  name: string;
+  price: number;
+};
+
+type ProgrammingBook = {
+  // 서브
+  name: string;
+  price: number;
+  skill: string;
+};
+
+let book: Book;
+let programmingBook: ProgrammingBook = {
+  name: "TypeScript를 공부해!",
+  price: 20000,
+  skill: "typscript",
+};
+
+book = programmingBook;
+// programmingBook = book; // error. 다운캐스팅
+
+// Book은 ProgrammingBook 타입으로 업캐스팅할 수 있으니 초기화 시 ProgrammingBook 타입에 맞게 적어도 되는거 아닐까?
+// -> 아니다! 변수를 초기화 할 때 초기화 하는 값으로 객체 리터럴을 사용하면 발생하는 '초과 프로퍼티 검사'가 발동된다.
+// -> 초과 프로퍼티 검사는 실제 타입에는 정의해놓지 않은 프로퍼티를 작성하면 안되도록 막는 검사를 뜻한다.
+let book2: Book = {
+  name: "TypeScript를 공부해!",
+  price: 20000,
+  //   skill: "typscript", // error, 초과 프로퍼티. (실제 타입에는 정의해놓지 않은 프로퍼티)
+};
+
+// 초과 프로퍼티 검사를 막으려면?! -> 아래와 같이 작성하면 객체 리터럴을 사용하게 아니라서 허용이 된다.
+let book3: Book = programmingBook;
+
+// 함수의 인수로 객체를 전달할 때에도 객체 리터럴로 전달하면 초과 프로퍼티가 발생하기 때문에,
+function func(book: Book) {}
+func({
+  // error
+  name: "TypeScript를 공부해!",
+  price: 20000,
+  //   skill: "typscript", // 초과 프로퍼티 발생
+});
+
+// 만약 서브타입 객체를 넣으려고 하면, 객체 리터럴을 이용하는 게 아닌 변수에 저장해뒀다가 인수로 '변수를 전달'해야한다.
+func(programmingBook);
