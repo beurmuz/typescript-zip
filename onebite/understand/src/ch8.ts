@@ -78,13 +78,72 @@ function login(user: User) {
 
 /**
  * tag의 효과
- * 
- * 원래 Admin, Member, Guest type은 서로 교집합이 있는 상태였다. 
- * 하지만 각각 tag의 type이 ADMIN, MEMBER, GUEST로 string 리터럴 타입으로 정의되어있기 때문에, 
+ *
+ * 원래 Admin, Member, Guest type은 서로 교집합이 있는 상태였다.
+ * 하지만 각각 tag의 type이 ADMIN, MEMBER, GUEST로 string 리터럴 타입으로 정의되어있기 때문에,
  * 각 타입의 교집합이 존재할 수 없는 서로소 집합 관계로 바뀌게 된다.
- * 
- * 예를 들어 Admin과 Member type이 교집합이 있으려면 tag가 ADMIN이면서 동시에 MEMBER여야하는데, 
+ *
+ * 예를 들어 Admin과 Member type이 교집합이 있으려면 tag가 ADMIN이면서 동시에 MEMBER여야하는데,
  * 스트링 리터럴 타입은 오직 1개의 값만 포함하기 때문에 교집합이 존재할 수밖에 없는 것이다. (never, 공집합)
- * 
+ *
  * 이 tag로 인해 User type은 '서로소 유니온 타입'이 된다.
  */
+
+/**
+ * 비동기 작업의 결과를 처리하는 객체 만들기 예제
+ */
+
+type LoadingTask = {
+  state: "LOADING";
+};
+
+type FailedTask = {
+  state: "FAILED";
+  error: {
+    message: string;
+  };
+};
+
+type SuccessTask = {
+  state: "SUCCESS";
+  response: {
+    data: string;
+  };
+};
+
+type AsyncTask = LoadingTask | FailedTask | SuccessTask;
+
+// 로딩 중 -> 콘솔에 로딩중 출력
+// 실패 -> 실패: 에러메시지 출력
+// 성공 -> 성공: 데이터 출력
+function processResult(task: AsyncTask) {
+  switch (task.state) {
+    case "LOADING":
+      console.log("로딩 중 ...");
+      break;
+    case "FAILED":
+      console.log(`에러 발생: ${task.error.message}`);
+      break;
+    case "SUCCESS":
+      console.log(`성공: ${task.response.data}`);
+      break;
+  }
+}
+
+const loading: AsyncTask = {
+  state: "LOADING",
+};
+
+const failed: AsyncTask = {
+  state: "FAILED",
+  error: {
+    message: "오류 발생 원인은 .. 찾아봐!",
+  },
+};
+
+const success: AsyncTask = {
+  state: "SUCCESS",
+  response: {
+    data: "data data data data data",
+  },
+};
