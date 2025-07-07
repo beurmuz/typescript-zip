@@ -39,3 +39,12 @@ function getSum(...rest: number[]) {
 }
 getSum(1, 2, 3); // 6
 getSum(1, 2, 3, 4, 5); // 15
+
+function getSum2(...rest: [number, number, number]) {
+  let sum = 0;
+  rest.forEach((num) => (sum += num));
+
+  return sum;
+}
+getSum2(1, 2, 3); // 6
+// getSum2(1, 2, 3, 4, 5); // error
