@@ -17,7 +17,7 @@ let a: A = () => 10;
 let b: B = () => 10;
 
 a = b; // ok. (포괄적인애) = (세부적인애). (= 업캐스팅)
-b = a; // error. b에 a를 할당하겠다는 것은, Type A(number type)를 Type B(number 리터럴 type)에 할당하겠다는 뜻과 같다. (= 다운 캐스팅)
+// b = a; // error. b에 a를 할당하겠다는 것은, Type A(number type)를 Type B(number 리터럴 type)에 할당하겠다는 뜻과 같다. (= 다운 캐스팅)
 
 // 기준 2) 매개변수가 호환되는가?
 //   2-1. 매개변수의 개수가 같을 때
